@@ -8,18 +8,26 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link href="css/jarvis.css" rel="stylesheet">
-
 </head>
 
-<body>
+<body class="container">
     <div class="row">
-        <div class="col s12 m6">
-            <div class="card">
+        <div class="col offset-s0 offset-l3 s12 l6 mt-5">
+            <div class="card z-depth-3">
                 <div class="card-content">
-                	<div class="speech-text">Speak now..</div>
+                    <div class="speech-text-container">
+                        <div class="input-field">
+                            <input placeholder="Speak now..." id="speech-text" type="text" class="validate">
+                        </div>
+                        <div class="switch">
+                            <label>
+                                Autostart Listening : Off<input type="checkbox" id="autostart" checked="true">
+                                <span class="lever"></span>On
+                            </label>
+                        </div>
+                    </div>
                     <a class="btn-floating btn-large waves-effect waves-light green right"><i class="material-icons">mic</i></a>
                 </div>
             </div>

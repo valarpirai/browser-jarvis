@@ -1,3 +1,7 @@
 body {
 	background: aliceblue;
 }
+.center-in-page {
+	position: absolute;
+	top: 50%;
+}
