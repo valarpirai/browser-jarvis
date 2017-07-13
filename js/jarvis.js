@@ -81,7 +81,7 @@
             }
         }
 
-        function toggleStartandStop() {
+        this.toggleSR = function toggleStartandStop() {
             if (recognition) {
                 self.stop()
             } else {
@@ -108,16 +108,18 @@
 
         var isActive = true;
         var canAutoStart = true;
+        var manualStopped = false;
         var sr = new SpeechRecognition()
 
         var commandText = $('#speech-text')
+        var micButton = $('#mic-btn')
 
         sr.start()
 
         sr.onend = function () {
             if(isActive) {
                 console.info(canAutoStart ? "Restart SR" : "No SR restart")
-                canAutoStart && sr.restart();
+                !manualStopped && canAutoStart && sr.restart();
             } else {
                 console.info("No SR Restart")
             }
@@ -126,6 +128,17 @@
         sr.onCommand = function (command) {
             console.log("Command:" + command);
             setCommandText(command)
+
+            if (command.indexOf('go to ') != -1) {
+                command = $.trim(command.replace('go to ', ''))
+                var url = 'http://www.' + command + ".com"
+                window.open(url)
+            } else if (command.indexOf('search ') != -1) {
+                command = $.trim(command.replace('search ', ''))
+                command = command.replace(' ', '+')
+                var url = 'https://www.google.co.in/search?q='+command
+                window.open(url)
+            }
         }
 
         function setCommandText(command) {
@@ -154,7 +167,7 @@
                     case "focus":
                         // console.info("Tab is focussed")
                         isActive = true;
-                        canAutoStart && sr.restart()
+                        !manualStopped && canAutoStart && sr.restart()
                         break;
                 }
             }
@@ -167,6 +180,24 @@
             canAutoStart = checked;
             console.log("SR Autostart: " + checked);
         });
+
+        commandText.keypress(function(event) {
+            if (13 == event.which) {
+                
+            } else {
+                
+            }
+        });
+
+        micButton.click(function () {
+            // Toggle Button color between red and green
+            micButton.toggleClass('red green')
+
+            manualStopped = true;
+
+            // Start listening, if already started stop listening
+            sr.stop()
+        })
 
         // ========================================================================
         // Event Listeners end
