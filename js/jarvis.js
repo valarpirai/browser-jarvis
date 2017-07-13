@@ -30,8 +30,9 @@
         };
 
         this.start = function(forceRestart) {
+            forceRestart = forceRestart ? true : false;
             // Stop before start
-            if(!forceRestart && recognition) {
+            if(forceRestart == false && recognition) {
                 console.log("Already listening")
                 return;
             }
@@ -63,6 +64,7 @@
 
             recognition.onend = function() {
                 console.log("SR end");
+                self.stop()
                 self.onend()
             }
 
@@ -90,14 +92,14 @@
         function parseCommand(text) {
             text = text.toLowerCase();
 
-            text = text.split(' ')
-            if(text.length > 0) {
-                if('jarvis' == text[0]) {
-                    text.splice(0, 1)
-                    return text.join(' ')
-                }
-            }
-            return '';
+            // text = text.split(' ')
+            // if(text.length > 0) {
+            //     if('jarvis' == text[0]) {
+            //         text.splice(0, 1)
+            //         return text.join(' ')
+            //     }
+            // }
+            return text;
         }
     };
 
@@ -107,6 +109,8 @@
         var isActive = true;
         var canAutoStart = true;
         var sr = new SpeechRecognition()
+
+        var commandText = $('#speech-text')
 
         sr.start()
 
@@ -121,6 +125,15 @@
 
         sr.onCommand = function (command) {
             console.log("Command:" + command);
+            setCommandText(command)
+        }
+
+        function setCommandText(command) {
+            commandText.val(capitalizeFirstLetter(command))
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
         // ========================================================================
